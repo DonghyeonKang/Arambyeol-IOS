@@ -9,73 +9,14 @@ import SwiftUI
 
 // MARK: - Roommate Matching View
 struct RoommateMatchingView: View {
-    @State private var selectedFilter: MatchingFilter = .all
-    @State private var showingDetail = false
-    @State private var selectedProfile: RoommateProfile?
-    
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                // 필터 섹션
-                filterSection
-                
-                // 프로필 리스트
-                profileList
-            }
-            .navigationTitle("룸메 매칭")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        // 내 프로필 등록
-                    }) {
-                        Image(systemName: "person.crop.circle.badge.plus")
-                    }
+            ComingSoonView(title: "룸메 매칭")
+                .navigationTitle("룸메 매칭")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    // toolbar를 비워서 우상단 버튼 제거
                 }
-            }
-            .sheet(item: $selectedProfile) { profile in
-                ProfileDetailView(profile: profile)
-            }
-        }
-    }
-    
-    // MARK: - Filter Section
-    private var filterSection: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 12) {
-                ForEach(MatchingFilter.allCases, id: \.self) { filter in
-                    FilterButton(
-                        title: filter.title,
-                        isSelected: selectedFilter == filter
-                    ) {
-                        selectedFilter = filter
-                    }
-                }
-            }
-            .padding()
-        }
-        .background(Color(.systemGray6))
-    }
-    
-    // MARK: - Profile List
-    private var profileList: some View {
-        ScrollView {
-            LazyVStack(spacing: 16) {
-                ForEach(filteredProfiles) { profile in
-                    ProfileCard(profile: profile) {
-                        selectedProfile = profile
-                    }
-                }
-            }
-            .padding()
-        }
-    }
-    
-    // MARK: - Filtered Profiles
-    private var filteredProfiles: [RoommateProfile] {
-        if selectedFilter == .all {
-            return sampleProfiles
-        } else {
-            return sampleProfiles.filter { $0.gender == selectedFilter }
         }
     }
 }
